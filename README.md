@@ -33,12 +33,16 @@ Generate Traffic:
 mininet> h1 iperf -s &
 mininet> h2 iperf -c h1 -t 30
 ```
-📊 Results & Performance
-1. Idle Scenario
-In the idle state, the monitor shows minimal background traffic (approx. 112-448 bps) representing OpenFlow control messages and ARP traffic.
+## 📊 Results & Performance
 
-2. High Traffic Scenario
-During the iperf test between h1 and h2, utilization spikes to Gigabit levels on Ports 1 and 2, while Port 3 remains at 0 bps.
+### 1. Idle Scenario
+The monitor initially shows minimal background traffic (approx. 112 bps). This represents control plane overhead and ARP traffic.
+![Idle State](idle.png)
 
-3. Match-Action Flow Rules
-Verified via ovs-ofctl dump-flows s1. This confirms the controller is installing rules based on specific MAC/IP matches.
+### 2. High Traffic Scenario
+By running `iperf` between h1 and h2, we observe a massive spike in utilization on Ports 1 and 2 (exceeding 5 Gbps), while Port 3 remains idle.
+![High Traffic](traffic.png)
+
+### 3. Match-Action Flow Rules
+The following screenshot confirms that the controller has successfully installed flow rules in the switch. You can see the matching IP addresses (`10.0.0.1` and `10.0.0.2`) and the corresponding output actions.
+![Flow Rules](flows.png)
